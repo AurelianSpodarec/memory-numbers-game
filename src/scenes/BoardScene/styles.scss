@@ -1,0 +1,21 @@
+.board {
+    display: flex;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+
+    &__cell {
+        flex: 1 0 32%; /* explanation below */
+       
+        height: 100px;
+        border: 2px solid red;
+        cursor: pointer;
+
+        &:hover {
+            border-color: blue;
+        }
+
+        &.is-active {
+            background-color: green;
+        }
+    }
+}
