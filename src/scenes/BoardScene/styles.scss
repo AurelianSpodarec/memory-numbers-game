@@ -2,13 +2,23 @@
     display: flex;
     flex-wrap: wrap;
     box-sizing: border-box;
+    max-width: 700px;
+    flex-grow: 1;
 
     &__cell {
         flex: 1 0 32%; /* explanation below */
-       
-        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2em;
+        min-height: 200px;
+        // max-width: 100px;
         border: 2px solid red;
         cursor: pointer;
+
+        &:active {
+            background-color: greenyellow;
+        }
 
         &:hover {
             border-color: blue;
@@ -18,4 +28,21 @@
             background-color: green;
         }
     }
+
+    &__cell-number {
+        // color: white;
+    
+    }
+}
+
+body {
+    // background: black;
+}
+
+.stats {
+    // color: white;
+}
+
+.game-container {
+    display: flex;
 }

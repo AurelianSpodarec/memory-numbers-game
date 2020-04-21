@@ -4,7 +4,7 @@ function Cell({ number, active, onClick }) {
 
     return (
         <div className={[`board__cell`, active ? "is-active" : null].join(" ")} onClick={onClick}>
-            {number}
+            <span className="board__cell-number">{number}</span>
         </div >
     )
 }
