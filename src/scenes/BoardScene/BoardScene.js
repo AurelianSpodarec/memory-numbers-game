@@ -18,23 +18,34 @@ import './styles.scss';
 //           Each time it reaches the end, restart it and add new number and show it again
 
 
+
+// Screen Loaded
+// User presses Start Button
+//   - Random number get generated -> the number flashes on screen -> user turn now
+// 
+// If user clicks the right numbers
+
+
+
+
+
 function BoardScene() {
 
 
-    const [gameNumbers, setGameNumbers] = useState([])
-    const [isPlayerTurn, setIsPlayerTurn] = useState(false)
+    const [gameNumbers, setGameNumbers] = useState([]);
+    const [isPlayerTurn, setIsPlayerTurn] = useState(false);
 
     const [currentScore, setCurrentScore] = useState(0);
     const [bestScore, setBestScore] = useState(0);
 
     const [flashCard, setFlashCard] = useState(null);
 
+    const [number, setNumber] = useState(null);
 
-
+    // TODO: refactor
     let count = 0;
     let index = 0;
-    let timerID;
-    let currentUserIndex = 0;
+
 
 
 
@@ -81,21 +92,18 @@ function BoardScene() {
     function addNewNumber() {
         let memoryNumber = generateRandomNumber(1, 9)
         setGameNumbers(gameNumbers => [...gameNumbers, memoryNumber])
-        // blinkCell();
     }
 
+    let currentUserIndex = 0;
     const isMatch = (userNumber) => {
 
-        // Match if what the user clicked, currently matches whats in array
-        const memoryCurrentNumber = gameNumbers[currentUserIndex];
-        // console.log(memoryCurrentNumber)
+        console.log("memory", gameNumbers[currentUserIndex])
 
-        // if array length and user is 0 then player turn false
+        if (userNumber === gameNumbers[currentUserIndex]) {
 
-        if (userNumber === memoryCurrentNumber) {
-
-            console.log("Well done! Clap clap clap")
             currentUserIndex++;
+            console.log("Well done! Clap clap clap")
+
             addNewNumber()
         } else {
             // Game over
@@ -104,13 +112,20 @@ function BoardScene() {
         }
     }
 
+    console.log("current index", currentUserIndex)
+
     function generateRandomNumber(min, max) {
         return Math.floor(Math.random() * (max - min) + min);
     }
 
     function clickedNumber(number) {
-        isMatch(number)
+        // isMatch(number)
+        setNumber(number)
     }
+
+    useEffect(() => {
+        isMatch(number)
+    }, [number])
 
     return (
         <div>
