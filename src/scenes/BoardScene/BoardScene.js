@@ -20,18 +20,23 @@ import './styles.scss';
 
 function BoardScene() {
 
-    const [memoryNumbers, setMemoryNumbers] = useState([1, 3, 5, 9]);// move one by one withing the array
-    const [playerTurn, setPlayerTurn] = useState(false);
-    const [userNumber, setUserNumber] = useState(null)
-    const [bestScore, setBestScore] = useState(0); // store in local storage later
-    const [userClickedNumer, setUserClickedNumer] = useState(null);
+
+    const [gameNumbers, setGameNumbers] = useState([])
+    const [isPlayerTurn, setIsPlayerTurn] = useState(false)
+
+    const [currentScore, setCurrentScore] = useState(0);
+    const [bestScore, setBestScore] = useState(0);
 
     const [flashCard, setFlashCard] = useState(null);
-    // User current click, must match whats in the array
+
+
 
     let count = 0;
     let index = 0;
     let timerID;
+    let currentUserIndex = 0;
+
+
 
 
     function initGame() {
@@ -44,27 +49,29 @@ function BoardScene() {
     }
 
     function resetGame() {
-        // Reset the game values
-        // Memory Numbers, current score, indexes
-    }
-
-    function gameOver() {
-        // Stop the game, and assign best score if it has been higher than prev score
+        setGameNumbers([])
+        if (bestScore < gameNumbers.length) return setBestScore(gameNumbers.length)
     }
 
     function blinkCell() {
+        // Add new number and stop, wait for the user to go over them, and then stop again
+
         // Flash, then add a new number when all have been flashed, and repeat
         // Disable user clicking on cells when flashing cells
-        const memoryNumbersLenght = memoryNumbers.length;
+        const gameNumbersLenght = gameNumbers.length;
 
-
-        timerID = setInterval(() => {
+        const timerID = setInterval(() => {
             // setFlashCard(count++)
-            if (index === memoryNumbersLenght) {
+            if (index === gameNumbersLenght) {
                 clearInterval(timerID)
                 addNewNumber()
+                count = 0
+                index = 0
+                setIsPlayerTurn(true)
+                // blinkCell()
+                setFlashCard(gameNumbers[count])
             } else {
-                setFlashCard(memoryNumbers[count])
+                setFlashCard(gameNumbers[count])
                 count++
                 index++
             }
@@ -73,25 +80,27 @@ function BoardScene() {
 
     function addNewNumber() {
         let memoryNumber = generateRandomNumber(1, 9)
-        setMemoryNumbers(memoryNumbers => [...memoryNumbers, memoryNumber])
+        setGameNumbers(gameNumbers => [...gameNumbers, memoryNumber])
+        // blinkCell();
     }
 
-
-    let currentIndex = 0;
-    function isMatch() {
+    const isMatch = (userNumber) => {
 
         // Match if what the user clicked, currently matches whats in array
-        const memoryCurrentNumber = memoryNumbers[currentIndex];
-        console.log(memoryCurrentNumber)
+        const memoryCurrentNumber = gameNumbers[currentUserIndex];
+        // console.log(memoryCurrentNumber)
 
+        // if array length and user is 0 then player turn false
 
         if (userNumber === memoryCurrentNumber) {
 
             console.log("Well done! Clap clap clap")
-            currentIndex++;
+            currentUserIndex++;
+            addNewNumber()
         } else {
             // Game over
             console.log("Game over")
+            resetGame()
         }
     }
 
@@ -100,47 +109,47 @@ function BoardScene() {
     }
 
     function clickedNumber(number) {
-        setUserClickedNumer(number)
         isMatch(number)
-        console.log("Clicked", number)
     }
 
     return (
         <div>
-            <div>
+
+
+            <div className="testing-stuff">
                 <div>
                     <button onClick={startGame}>Start Game</button>
                 </div>
                 <div>
                     <span>Game numbers: </span>
-                    {memoryNumbers.map((item, i) => {
+                    {gameNumbers.map((item, i) => {
                         return <span key={i}>{item}</span>
                     })}
                 </div>
                 <div>
-                    <span>Score: {memoryNumbers.length}</span>
+                    <span>User Turn: {isPlayerTurn ? "True" : "False"}</span>
                 </div>
                 <div>
-                    <span>Clicked number: {userClickedNumer}</span>
+                    <span>Score: {gameNumbers.length}</span>
                 </div>
-            </div>
 
+            </div>
 
             <div className="game-container">
                 <div className="board">
-
                     {Array(9).fill().map((x, i) => {
                         return (
                             <Cell key={i} onClick={() => clickedNumber(i + 1)} number={i + 1} active={i + 1 === flashCard ? true : false} />
                         )
                     })}
                 </div>
+
                 <div className="stats">
                     <div>
-                        <p>Score:</p><span>{memoryNumbers.length}</span>
+                        <span>Score:</span><span>{gameNumbers.length}</span>
                     </div>
                     <div>
-                        <p>Best Score:</p><span>{bestScore}</span>
+                        <span>Best Score:</span><span>{bestScore}</span>
                     </div>
                 </div>
             </div>

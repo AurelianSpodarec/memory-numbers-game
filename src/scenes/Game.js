@@ -14,12 +14,8 @@ function Game() {
     return (
         <div className="bg">
             <Router history={browserHistory}>
-
                 <Route render={({ location }) => (
-
                     <Routes location={location} />
-
-
                 )} />
             </Router >
         </div>
