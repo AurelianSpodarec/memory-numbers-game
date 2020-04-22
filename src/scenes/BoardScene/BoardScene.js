@@ -5,30 +5,6 @@ import Cell from './sub-components/Cell/Cell';
 import './styles.scss';
 
 
-
-// Objective: Generate random numbers from 1 to 9, and flash for the user to see
-// the user then should click the number and if it matches, add new one
-// on each start re-play the numbers for the user to see - don't let the user to click when playing them
-// if the user has incorrect number, get the final score and re-start again
-
-
-
-
-// Step one: Select random numbers from 1 to 9. 
-//           Each time it reaches the end, restart it and add new number and show it again
-
-
-
-// Screen Loaded
-// User presses Start Button
-//   - Random number get generated -> the number flashes on screen -> user turn now
-// 
-// If user clicks the right numbers
-
-
-
-
-
 function BoardScene() {
 
 
@@ -40,53 +16,95 @@ function BoardScene() {
 
     const [flashCard, setFlashCard] = useState(null);
 
-    const [number, setNumber] = useState(null);
+    const [clickedNumber, setClickedNumber] = useState(null);
 
-    // TODO: refactor
-    let count = 0;
-    let index = 0;
+    const [currentUserIndex, setCurrentUserIndex] = useState(0)
+    const [currentGameIndex, setCurrentGameIndex] = useState(0)
+
+    // // TODO: refactor
+    // let count = 0;
+    // let index = 0;
 
 
-
-
-
-    function initGame() {
-        // Initialise the game with basic values
-    }
+    // function initGame() {
+    //     // Initialise the game with basic values
+    // }
 
     function startGame() {
-        // When user starts, add one item to the memory numbers
-        blinkCell()
+        addNewNumber()
     }
 
     function resetGame() {
         setGameNumbers([])
+        setCurrentUserIndex(0)
         if (bestScore < gameNumbers.length) return setBestScore(gameNumbers.length)
     }
 
-    function blinkCell() {
-        // Add new number and stop, wait for the user to go over them, and then stop again
+    // // function blinkCell() {
+    // //     // Add new number and stop, wait for the user to go over them, and then stop again
 
-        // Flash, then add a new number when all have been flashed, and repeat
-        // Disable user clicking on cells when flashing cells
-        const gameNumbersLenght = gameNumbers.length;
+    // //     // Flash, then add a new number when all have been flashed, and repeat
+    // //     // Disable user clicking on cells when flashing cells
+    // //     const gameNumbersLenght = gameNumbers.length;
 
-        const timerID = setInterval(() => {
-            // setFlashCard(count++)
-            if (index === gameNumbersLenght) {
-                clearInterval(timerID)
-                addNewNumber()
-                count = 0
-                index = 0
-                setIsPlayerTurn(true)
-                // blinkCell()
-                setFlashCard(gameNumbers[count])
-            } else {
-                setFlashCard(gameNumbers[count])
-                count++
-                index++
-            }
-        }, 500)
+    // //     const timerID = setInterval(() => {
+    // //         // setFlashCard(count++)
+    // //         if (index === gameNumbersLenght) {
+    // //             clearInterval(timerID)
+    // //             addNewNumber()
+    // //             count = 0
+    // //             index = 0
+    // //             setIsPlayerTurn(true)
+    // //             // blinkCell()
+    // //             setFlashCard(gameNumbers[count])
+    // //         } else {
+    // //             setFlashCard(gameNumbers[count])
+    // //             count++
+    // //             index++
+    // //         }
+    // //     }, 500)
+    // // }
+
+
+
+    // function addNewNumber() {
+    //     let memoryNumber = generateRandomNumber(1, 9)
+    //     setGameNumbers(gameNumbers => [...gameNumbers, memoryNumber])
+    // }
+
+
+    // console.log("currentUserIndefffx", gameNumbers[currentUserIndex])
+    // function isMatch(userNumber) {
+    //     console.log("currentUserIndex", gameNumbers[currentUserIndex])
+
+    //     if (userNumber === gameNumbers[currentUserIndex]) {
+    //         setCurrentUserIndex(currentUserIndex => currentUserIndex + 1);
+    //         addNewNumber()
+    //         console.log("Well done! Clap clap clap")
+    //     } else {
+    //         // Game over
+    //         console.log("Game over")
+    //         // resetGame()
+    //     }
+    // }
+
+
+    // function clickedNumber(number) {
+    //     // isMatch(number)
+    //     // currentUserIndex++
+    //     isMatch(number)
+    //     setCurrentUserIndex(currentUserIndex => currentUserIndex + 1);
+    //     setNumber(number)
+    // }
+    // console.log(currentUserIndex)
+
+    // useEffect(() => {
+    //     isMatch(number)
+    // }, [number])
+
+
+    function generateRandomNumber(min, max) {
+        return Math.floor(Math.random() * (max - min) + min);
     }
 
     function addNewNumber() {
@@ -94,38 +112,41 @@ function BoardScene() {
         setGameNumbers(gameNumbers => [...gameNumbers, memoryNumber])
     }
 
-    let currentUserIndex = 0;
-    const isMatch = (userNumber) => {
+    function clickedNumberHandle(number) {
+        setClickedNumber(number)
+        isMatch(number)
 
-        console.log("memory", gameNumbers[currentUserIndex])
+    }
 
-        if (userNumber === gameNumbers[currentUserIndex]) {
+    // Current gameIndex
 
-            currentUserIndex++;
-            console.log("Well done! Clap clap clap")
+    function isMatch(number) {
+        if (number === gameNumbers[currentUserIndex]) {
 
-            addNewNumber()
+            if (currentUserIndex + 1 === gameNumbers.length) {
+                setCurrentUserIndex(0)
+                setCurrentGameIndex(0)
+                addNewNumber()
+            } else {
+                setCurrentUserIndex(currentUserIndex + 1)
+            }
+
         } else {
-            // Game over
-            console.log("Game over")
             resetGame()
+            console.log("game over")
         }
     }
 
-    console.log("current index", currentUserIndex)
 
-    function generateRandomNumber(min, max) {
-        return Math.floor(Math.random() * (max - min) + min);
-    }
+    // Each new level, the user needs to go though the entire begining in the array and match game aray
 
-    function clickedNumber(number) {
-        // isMatch(number)
-        setNumber(number)
-    }
+    // [2,5,9,4]
+    // user then needs to click 2, 5, 9 - if he get one wrong, 
 
-    useEffect(() => {
-        isMatch(number)
-    }, [number])
+
+    console.log("Clicked number", clickedNumber)
+
+
 
     return (
         <div>
@@ -134,6 +155,9 @@ function BoardScene() {
             <div className="testing-stuff">
                 <div>
                     <button onClick={startGame}>Start Game</button>
+                </div>
+                <div onClick={addNewNumber}>
+                    <button>Add new number</button>
                 </div>
                 <div>
                     <span>Game numbers: </span>
@@ -154,7 +178,7 @@ function BoardScene() {
                 <div className="board">
                     {Array(9).fill().map((x, i) => {
                         return (
-                            <Cell key={i} onClick={() => clickedNumber(i + 1)} number={i + 1} active={i + 1 === flashCard ? true : false} />
+                            <Cell key={i} onClick={() => clickedNumberHandle(i + 1)} number={i + 1} active={i + 1 === flashCard ? true : false} />
                         )
                     })}
                 </div>
