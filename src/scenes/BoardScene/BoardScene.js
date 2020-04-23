@@ -122,8 +122,9 @@ function BoardScene() {
 
     function isMatch(number) {
         if (number === gameNumbers[currentUserIndex]) {
-
+            console.log("Correct")
             if (currentUserIndex + 1 === gameNumbers.length) {
+                console.log("Next Round")
                 setCurrentUserIndex(0)
                 setCurrentGameIndex(0)
                 addNewNumber()
@@ -138,10 +139,23 @@ function BoardScene() {
     }
 
 
-    // Each new level, the user needs to go though the entire begining in the array and match game aray
+    // var currentAnswer = 0;
 
-    // [2,5,9,4]
-    // user then needs to click 2, 5, 9 - if he get one wrong, 
+    // function countAnswer() {
+
+    //     gameNumbers[currentAnswer]
+
+    // }
+
+
+    // Game number [2,5,9,4]
+    // User to win: He needs to click 2, 5, 9, 4 - in order, new number gets added
+
+    // Game number [2,5,9,4,8]
+    // User to win: He needs to re-click 2, 5, 9, 4 and now 8 - in order, new number gets added
+    // Repeat each round
+
+
 
 
     console.log("Clicked number", clickedNumber)
