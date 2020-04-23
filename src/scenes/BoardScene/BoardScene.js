@@ -86,31 +86,31 @@ function BoardScene() {
     }
 
     return (
-        <div>
-
-            <div className="testing-stuff">
-                <div>
-                    <button onClick={startGame}>Start Game</button>
-                </div>
-                <div onClick={addNewNumber}>
-                    <button>Add new number</button>
-                </div>
-                <div>
-                    <span>Game numbers: </span>
-                    {gameNumbers.map((item, i) => {
-                        return <span key={i}>{item}</span>
-                    })}
-                </div>
-                <div>
-                    <span>User Turn: {isPlayerTurn ? "True" : "False"}</span>
-                </div>
-                <div>
-                    <span>Score: {gameNumbers.length}</span>
-                </div>
-
-            </div>
-
+        <>
             <div className="game-container">
+
+                <div className="testing-stuff">
+                    <div>
+                        <button onClick={startGame}>Start Game</button>
+                    </div>
+                    <div onClick={addNewNumber}>
+                        <button>Add new number</button>
+                    </div>
+                    <div>
+                        <span>Game numbers: </span>
+                        {gameNumbers.map((item, i) => {
+                            return <span key={i}>{item}</span>
+                        })}
+                    </div>
+                    <div>
+                        <span>User Turn: {isPlayerTurn ? "True" : "False"}</span>
+                    </div>
+                    <div>
+                        <span>Score: {gameNumbers.length}</span>
+                    </div>
+
+                </div>
+
                 <div className="board">
                     {Array(9).fill().map((x, i) => {
                         return (
@@ -128,8 +128,7 @@ function BoardScene() {
                     </div>
                 </div>
             </div>
-
-        </div>
+        </>
     );
 }
 
