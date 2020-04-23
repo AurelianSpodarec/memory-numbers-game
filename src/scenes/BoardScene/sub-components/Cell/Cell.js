@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-function Cell({ number, active, onClick }) {
+function Cell({ style, number, active, onClick }) {
 
     return (
-        <div className={[`board__cell`, active ? "is-active" : null].join(" ")} onClick={onClick}>
+        <div style={style} className={[`board__cell`, active ? "is-active" : null].join(" ")} onClick={onClick}>
+            {/* // <div style={style} className="board__cell" onClick={onClick}> */}
             <span className="board__cell-number">{number}</span>
         </div >
     )

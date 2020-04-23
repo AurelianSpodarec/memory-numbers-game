@@ -21,17 +21,13 @@ function BoardScene() {
     const [currentUserIndex, setCurrentUserIndex] = useState(0)
     const [currentGameIndex, setCurrentGameIndex] = useState(0)
 
-    // // TODO: refactor
-    // let count = 0;
-    // let index = 0;
-
-
     // function initGame() {
     //     // Initialise the game with basic values
     // }
 
     function startGame() {
         addNewNumber()
+        blinkCell()
     }
 
     function resetGame() {
@@ -39,69 +35,6 @@ function BoardScene() {
         setCurrentUserIndex(0)
         if (bestScore < gameNumbers.length) return setBestScore(gameNumbers.length)
     }
-
-    // // function blinkCell() {
-    // //     // Add new number and stop, wait for the user to go over them, and then stop again
-
-    // //     // Flash, then add a new number when all have been flashed, and repeat
-    // //     // Disable user clicking on cells when flashing cells
-    // //     const gameNumbersLenght = gameNumbers.length;
-
-    // //     const timerID = setInterval(() => {
-    // //         // setFlashCard(count++)
-    // //         if (index === gameNumbersLenght) {
-    // //             clearInterval(timerID)
-    // //             addNewNumber()
-    // //             count = 0
-    // //             index = 0
-    // //             setIsPlayerTurn(true)
-    // //             // blinkCell()
-    // //             setFlashCard(gameNumbers[count])
-    // //         } else {
-    // //             setFlashCard(gameNumbers[count])
-    // //             count++
-    // //             index++
-    // //         }
-    // //     }, 500)
-    // // }
-
-
-
-    // function addNewNumber() {
-    //     let memoryNumber = generateRandomNumber(1, 9)
-    //     setGameNumbers(gameNumbers => [...gameNumbers, memoryNumber])
-    // }
-
-
-    // console.log("currentUserIndefffx", gameNumbers[currentUserIndex])
-    // function isMatch(userNumber) {
-    //     console.log("currentUserIndex", gameNumbers[currentUserIndex])
-
-    //     if (userNumber === gameNumbers[currentUserIndex]) {
-    //         setCurrentUserIndex(currentUserIndex => currentUserIndex + 1);
-    //         addNewNumber()
-    //         console.log("Well done! Clap clap clap")
-    //     } else {
-    //         // Game over
-    //         console.log("Game over")
-    //         // resetGame()
-    //     }
-    // }
-
-
-    // function clickedNumber(number) {
-    //     // isMatch(number)
-    //     // currentUserIndex++
-    //     isMatch(number)
-    //     setCurrentUserIndex(currentUserIndex => currentUserIndex + 1);
-    //     setNumber(number)
-    // }
-    // console.log(currentUserIndex)
-
-    // useEffect(() => {
-    //     isMatch(number)
-    // }, [number])
-
 
     function generateRandomNumber(min, max) {
         return Math.floor(Math.random() * (max - min) + min);
@@ -115,10 +48,7 @@ function BoardScene() {
     function clickedNumberHandle(number) {
         setClickedNumber(number)
         isMatch(number)
-
     }
-
-    // Current gameIndex
 
     function isMatch(number) {
         if (number === gameNumbers[currentUserIndex]) {
@@ -128,6 +58,7 @@ function BoardScene() {
                 setCurrentUserIndex(0)
                 setCurrentGameIndex(0)
                 addNewNumber()
+                blinkCell();
             } else {
                 setCurrentUserIndex(currentUserIndex + 1)
             }
@@ -138,33 +69,24 @@ function BoardScene() {
         }
     }
 
+    let count = 0;
+    const blinkCell = () => {
 
-    // var currentAnswer = 0;
+        const timerID = setInterval(() => {
+            if (currentUserIndex === gameNumbers.length) {
+                clearInterval(timerID)
+                count = 0;
+                // setIsPlayerTurn(true)
+            } else {
+                setFlashCard(gameNumbers[count])
+                count++
+            }
+        }, 500);
 
-    // function countAnswer() {
-
-    //     gameNumbers[currentAnswer]
-
-    // }
-
-
-    // Game number [2,5,9,4]
-    // User to win: He needs to click 2, 5, 9, 4 - in order, new number gets added
-
-    // Game number [2,5,9,4,8]
-    // User to win: He needs to re-click 2, 5, 9, 4 and now 8 - in order, new number gets added
-    // Repeat each round
-
-
-
-
-    console.log("Clicked number", clickedNumber)
-
-
+    }
 
     return (
         <div>
-
 
             <div className="testing-stuff">
                 <div>
