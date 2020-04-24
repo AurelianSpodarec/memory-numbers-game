@@ -27,7 +27,7 @@ function BoardScene() {
 
     function startGame() {
         addNewNumber()
-        blinkCell()
+
     }
 
     function resetGame() {
@@ -36,18 +36,38 @@ function BoardScene() {
         if (bestScore < gameNumbers.length) return setBestScore(gameNumbers.length)
     }
 
+    let count = 0;
+
+    const blinkCell = () => {
+
+
+        const timerID = setInterval(() => {
+            if (currentUserIndex === gameNumbers.length) {
+                clearInterval(timerID)
+                count = 0;
+            } else {
+                setFlashCard(gameNumbers[count])
+                count++
+            }
+        }, 500);
+
+    }
+    console.log("player turns", isPlayerTurn)
     function generateRandomNumber(min, max) {
         return Math.floor(Math.random() * (max - min) + min);
     }
 
     function addNewNumber() {
+        console.log("Add new number")
         let memoryNumber = generateRandomNumber(1, 9)
         setGameNumbers(gameNumbers => [...gameNumbers, memoryNumber])
     }
 
     function clickedNumberHandle(number) {
-        setClickedNumber(number)
-        isMatch(number)
+        if (isPlayerTurn) {
+            setClickedNumber(number)
+            isMatch(number)
+        }
     }
 
     function isMatch(number) {
@@ -69,21 +89,9 @@ function BoardScene() {
         }
     }
 
-    let count = 0;
-    const blinkCell = () => {
-
-        const timerID = setInterval(() => {
-            if (currentUserIndex === gameNumbers.length) {
-                clearInterval(timerID)
-                count = 0;
-                // setIsPlayerTurn(true)
-            } else {
-                setFlashCard(gameNumbers[count])
-                count++
-            }
-        }, 500);
-
-    }
+    useEffect(() => {
+        blinkCell()
+    }, [gameNumbers])
 
     return (
         <>
