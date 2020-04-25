@@ -8,16 +8,22 @@
     background-color: #bbada0;
 
     &__cell {
-        flex: 1 0 32%; /* explanation below */
+        flex: 1 0 calc(33% - 10px);
         display: flex;
         justify-content: center;
         align-items: center;
         font-size: 2em;
-        min-height: 200px;
+        // min-height: 200px;
         // max-width: 100px;
         border: 2px solid #bbada0;
         background-color: #eee4da;
         cursor: pointer;
+
+        &:after {
+            content: "";
+            display: block;
+            padding-bottom: 100%;
+        }
 
         &:active {
             background-color: greenyellow;

@@ -37,10 +37,7 @@ function BoardScene() {
     }
 
     let count = 0;
-
     const blinkCell = () => {
-
-
         const timerID = setInterval(() => {
             if (currentUserIndex === gameNumbers.length) {
                 clearInterval(timerID)
@@ -50,8 +47,8 @@ function BoardScene() {
                 count++
             }
         }, 500);
-
     }
+
     console.log("player turns", isPlayerTurn)
     function generateRandomNumber(min, max) {
         return Math.floor(Math.random() * (max - min) + min);
