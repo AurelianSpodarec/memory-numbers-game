@@ -7,7 +7,6 @@ import './styles.scss';
 
 function BoardScene() {
 
-
     const [gameNumbers, setGameNumbers] = useState([]);
     const [isPlayerTurn, setIsPlayerTurn] = useState(false);
 
@@ -19,15 +18,10 @@ function BoardScene() {
     const [clickedNumber, setClickedNumber] = useState(null);
 
     const [currentUserIndex, setCurrentUserIndex] = useState(0)
-    const [currentGameIndex, setCurrentGameIndex] = useState(0)
 
-    // function initGame() {
-    //     // Initialise the game with basic values
-    // }
 
     function startGame() {
         addNewNumber()
-
     }
 
     function resetGame() {
@@ -38,6 +32,7 @@ function BoardScene() {
 
     let count = 0;
     const blinkCell = () => {
+
         const timerID = setInterval(() => {
             if (currentUserIndex === gameNumbers.length) {
                 clearInterval(timerID)
@@ -47,9 +42,9 @@ function BoardScene() {
                 count++
             }
         }, 500);
+
     }
 
-    console.log("player turns", isPlayerTurn)
     function generateRandomNumber(min, max) {
         return Math.floor(Math.random() * (max - min) + min);
     }
@@ -61,19 +56,15 @@ function BoardScene() {
     }
 
     function clickedNumberHandle(number) {
-        if (isPlayerTurn) {
-            setClickedNumber(number)
-            isMatch(number)
-        }
+        setClickedNumber(number)
+        isMatch(number)
     }
 
     function isMatch(number) {
         if (number === gameNumbers[currentUserIndex]) {
             console.log("Correct")
             if (currentUserIndex + 1 === gameNumbers.length) {
-                console.log("Next Round")
                 setCurrentUserIndex(0)
-                setCurrentGameIndex(0)
                 addNewNumber()
                 blinkCell();
             } else {
@@ -116,6 +107,8 @@ function BoardScene() {
 
                 </div>
 
+
+
                 <div className="board">
                     {Array(9).fill().map((x, i) => {
                         return (
@@ -125,13 +118,14 @@ function BoardScene() {
                 </div>
 
                 <div className="stats">
-                    <div>
-                        <span>Score:</span><span>{gameNumbers.length}</span>
+                    <div className="stats__score-wrap">
+                        <span>Score: </span><span>{gameNumbers.length}</span>
                     </div>
-                    <div>
-                        <span>Best Score:</span><span>{bestScore}</span>
+                    <div className="stats__bestScore-wrap">
+                        <span>Best Score: </span><span>{bestScore}</span>
                     </div>
                 </div>
+
             </div>
         </>
     );
