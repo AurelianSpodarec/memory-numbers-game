@@ -88,16 +88,11 @@ function useMaximum(value) {
  * */
 function useGameLogic(tileCount) {
     const [gameNumbers, setGameNumbers] = useState([]);
-    const flashCard = useTimedSequence(gameNumbers, 500);
     const performGuess = useGuessing(
         gameNumbers,
         addNewNumber,
         resetGame
     );
-
-    // We don't need useState, since this value is tied specifically to
-    // when there are no cards flashing, we can just calculate it directly.
-    const isPlayerTurn = flashCard == null;
 
     const [currentScore, setCurrentScore] = useState(0);
     const bestScore = useMaximum(currentScore);
@@ -127,8 +122,6 @@ function useGameLogic(tileCount) {
         gameNumbers,
         currentScore,
         bestScore,
-        isPlayerTurn,
-        flashCard,
         performGuess,
         startGame,
         addNewNumber,
@@ -141,12 +134,15 @@ function BoardScene() {
         gameNumbers,
         currentScore,
         bestScore,
-        isPlayerTurn,
-        flashCard,
         performGuess,
         startGame,
         addNewNumber,
     } = useGameLogic(tileCount);
+    const flashCard = useTimedSequence(gameNumbers, 500);
+
+    // We don't need useState, since this value is tied specifically to
+    // when there are no cards flashing, we can just calculate it directly.
+    const isPlayerTurn = flashCard == null;
 
     return (
         <div className="game-container">
