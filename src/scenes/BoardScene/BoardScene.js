@@ -14,9 +14,7 @@ function BoardScene() {
     const [bestScore, setBestScore] = useState(0);
 
     const [flashCard, setFlashCard] = useState(null);
-
     const [clickedNumber, setClickedNumber] = useState(null);
-
     const [currentUserIndex, setCurrentUserIndex] = useState(0)
 
 
@@ -30,20 +28,28 @@ function BoardScene() {
         if (bestScore < gameNumbers.length) return setBestScore(gameNumbers.length)
     }
 
-    let count = 0;
+
     const blinkCell = () => {
+        let count = 0;
 
+        setIsPlayerTurn(false);
         const timerID = setInterval(() => {
-            if (currentUserIndex === gameNumbers.length) {
-                clearInterval(timerID)
-                count = 0;
-            } else {
-                setFlashCard(gameNumbers[count])
-                count++
-            }
-        }, 500);
+            console.log("Inside interval before if")
+            console.log("currentUserIndex", count, gameNumbers.length)
 
-    }
+            if (count === gameNumbers.length) {
+                setIsPlayerTurn(true);
+                console.log("Inside time out if statement")
+                clearInterval(timerID);
+                count = 0;
+                setFlashCard(null);
+            } else {
+                setFlashCard(gameNumbers[count]);
+                count++;
+            }
+
+        }, 500);
+    };
 
     function generateRandomNumber(min, max) {
         return Math.floor(Math.random() * (max - min) + min);
@@ -56,6 +62,7 @@ function BoardScene() {
     }
 
     function clickedNumberHandle(number) {
+        console.log("Clicked number", number)
         setClickedNumber(number)
         isMatch(number)
     }
@@ -63,11 +70,14 @@ function BoardScene() {
     function isMatch(number) {
         if (number === gameNumbers[currentUserIndex]) {
             console.log("Correct")
+
             if (currentUserIndex + 1 === gameNumbers.length) {
                 setCurrentUserIndex(0)
+                console.log("set current index 0")
                 addNewNumber()
                 blinkCell();
             } else {
+                console.log("set current index + 1")
                 setCurrentUserIndex(currentUserIndex + 1)
             }
 
@@ -79,6 +89,7 @@ function BoardScene() {
 
     useEffect(() => {
         blinkCell()
+        console.log("Use effect start blinkCell")
     }, [gameNumbers])
 
     return (
